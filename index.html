@@ -25,7 +25,7 @@
       font-style: normal;
       font-display: swap;
     }
-    /* Если положишь ALSSelector.woff2 — раскомментируй: */
+    /* Если добавишь ALSSelector.woff2 — раскомментируй: */
     /*
     @font-face{
       font-family: "ALS Selector";
@@ -48,12 +48,12 @@
   </style>
 </head>
 <body class="bg-slate-950 min-h-screen">
-  <!-- Верхняя панель-подсказка -->
+  <!-- Верхняя подсказка -->
   <div class="controls sticky top-0 z-10 bg-slate-900/80 backdrop-blur border-b border-white/10">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 text-indigo-100/90">
       <img src="./logo.svg" class="h-8 w-8" alt="логотип">
       <div class="text-sm opacity-90">
-        Бейджи «Учебный вечер» — печать: Ctrl/Cmd+P (поля: <b>минимальные</b>, масштаб: <b>100%</b>)
+        Печать: Ctrl/Cmd+P (поля: <b>минимальные</b>, масштаб: <b>100%</b>)
       </div>
       <div class="ml-auto text-xs opacity-70">
         Шрифт: «ALS Selector» (если файл добавлен) / «ALS Sector»
@@ -62,7 +62,6 @@
   </div>
 
   <main class="max-w-6xl mx-auto px-4 py-6">
-    <!-- сетка бейджей -->
     <div class="badges-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center"></div>
   </main>
 
@@ -74,15 +73,15 @@
       <!-- световые пятна -->
       <div class="absolute -top-16 -left-16 h-48 w-48 rounded-full blur-3xl opacity-30 bg-fuchsia-500"></div>
       <div class="absolute -bottom-16 -right-16 h-56 w-56 rounded-full blur-3xl opacity-25 bg-indigo-500"></div>
-      <!-- сетка -->
+      <!-- аккуратная сетка -->
       <svg class="absolute inset-0 opacity-[0.08]" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <defs>
-          <pattern id="g" width="24" height="24" patternUnits="userSpaceOnUse">
-            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="white" stroke-width="0.5" />
-          </pattern>
-        </defs>
+        <defs><pattern id="g" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M 24 0 L 0 0 0 24" fill="none" stroke="white" stroke-width="0.5" />
+        </pattern></defs>
         <rect width="100%" height="100%" fill="url(#g)" />
       </svg>
+      <!-- диагональный блик -->
+      <div class="absolute -top-10 -left-20 w-[140%] h-1/2 rotate-[-12deg] bg-gradient-to-b from-white/8 via-white/2 to-transparent"></div>
 
       <!-- логотип + шапка -->
       <div class="absolute top-3 left-3 flex items-center gap-2">
@@ -92,16 +91,23 @@
         <div class="text-[10px] uppercase tracking-wider text-fuchsia-200/90">Учебный вечер</div>
       </div>
 
+      <!-- «прорезь под ленту» -->
+      <div class="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 rounded-b-xl bg-black/25 border border-white/15"></div>
+
       <!-- контент: по центру -->
       <div class="relative h-full w-full px-5 py-6 flex flex-col items-center justify-center gap-4">
-        <!-- белая карточка имени -->
-        <div class="relative rounded-2xl bg-white px-4 py-4 border border-white/70 shadow w-[85%]">
+        <!-- белая карточка имени с лёгкой внутренней тенью -->
+        <div class="relative rounded-2xl bg-white px-5 py-4 border border-white/80 shadow w-[85%]">
+          <div class="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)]"></div>
           <div class="name text-slate-900 font-bold leading-tight text-center text-2xl md:text-3xl break-words"></div>
         </div>
-        <!-- роль -->
+
+        <!-- роль: градиентная рамка + светлая подложка -->
         <div class="mt-1">
-          <span class="inline-flex items-center gap-2 text-xs bg-white/10 rounded-full px-3 py-1 border border-white/20 text-teal-300 font-semibold uppercase tracking-wide role">
-            РОЛЬ
+          <span class="roleFrame inline-flex items-center rounded-full p-[2px] bg-gradient-to-r from-cyan-300 to-teal-400">
+            <span class="roleInner inline-flex items-center rounded-full px-4 py-1 bg-white/90 text-slate-900 font-semibold uppercase tracking-wide roleText">
+              РОЛЬ
+            </span>
           </span>
         </div>
       </div>
@@ -118,13 +124,45 @@
       ["Латыров Михаил", "медиа"],
     ];
 
-    const grid = document.querySelector('.badges-grid');
-    const tpl  = document.getElementById('badge-tpl');
+    // Стиль ролей (градиенты без эмодзи)
+    const ROLE_STYLE = {
+      "главный организатор": { frame: "from-teal-300 to-emerald-400" },
+      "организатор":        { frame: "from-sky-300 to-cyan-400" },
+      "медиа":               { frame: "from-fuchsia-300 to-violet-400" },
+    };
+
+    // Автоподгон имени (уменьшаем кегль, если ФИО длинное)
+    function fitName(el, maxChars = 26, minPx = 18) {
+      const basePx = 32;
+      el.style.fontSize = basePx + "px";
+      if (el.textContent.length > maxChars) {
+        const k = Math.min(basePx, Math.max(minPx, basePx - Math.ceil((el.textContent.length - maxChars) * 0.7)));
+        el.style.fontSize = k + "px";
+        el.style.lineHeight = "1.1";
+      }
+    }
+
+    const grid = document.querySelector(".badges-grid");
+    const tpl  = document.getElementById("badge-tpl");
 
     for (const [name, role] of PEOPLE) {
       const node = tpl.content.cloneNode(true);
-      node.querySelector('.name').textContent = name;
-      node.querySelector('.role').textContent = role.toUpperCase();
+
+      // Имя
+      const nameEl = node.querySelector(".name");
+      nameEl.textContent = name;
+      fitName(nameEl, 26, 18);
+
+      // Роль
+      const r = role.trim().toLowerCase();
+      const roleTextEl = node.querySelector(".roleText");
+      const frameEl    = node.querySelector(".roleFrame");
+
+      roleTextEl.textContent = role.toUpperCase();
+
+      const style = ROLE_STYLE[r] || { frame: "from-indigo-300 to-purple-400" };
+      frameEl.className = `roleFrame inline-flex items-center rounded-full p-[2px] bg-gradient-to-r ${style.frame}`;
+
       grid.appendChild(node);
     }
   </script>
