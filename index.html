@@ -65,7 +65,7 @@
     <div class="badges-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center"></div>
   </main>
 
-  <!-- Шаблон бейджа -->
+  <!-- Шаблон бейджа (версия "как было") -->
   <template id="badge-tpl">
     <div class="badge relative overflow-hidden rounded-3xl shadow-2xl w-[360px] h-[480px] print:w-[90mm] print:h-[120mm]">
       <!-- фон-градиент -->
@@ -75,13 +75,38 @@
       <div class="absolute -bottom-16 -right-16 h-56 w-56 rounded-full blur-3xl opacity-25 bg-indigo-500"></div>
       <!-- аккуратная сетка -->
       <svg class="absolute inset-0 opacity-[0.08]" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <defs><pattern id="g" width="24" height="24" patternUnits="userSpaceOnUse">
+        <defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
           <path d="M 24 0 L 0 0 0 24" fill="none" stroke="white" stroke-width="0.5" />
         </pattern></defs>
-        <rect width="100%" height="100%" fill="url(#g)" />
+        <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
-      <!-- диагональный блик -->
-      <div class="absolute -top-10 -left-20 w-[140%] h-1/2 rotate-[-12deg] bg-gradient-to-b from-white/8 via-white/2 to-transparent"></div>
+
+      <!-- МАТЕМАТИЧЕСКИЙ ФОН (тонкий, не мешает) -->
+      <svg class="absolute inset-0 opacity-20 mix-blend-screen pointer-events-none" viewBox="0 0 360 480" aria-hidden="true">
+        <!-- Оси координат -->
+        <g stroke="white" stroke-width="1" opacity="0.22">
+          <line x1="36" y1="350" x2="320" y2="350" />
+          <line x1="60" y1="420" x2="60" y2="240" />
+        </g>
+        <!-- Синусоида -->
+        <path d="M60,350 C90,300 120,300 150,350 S210,400 240,350 S300,300 320,350"
+              fill="none" stroke="white" stroke-width="2" opacity="0.35"/>
+        <!-- Парабола -->
+        <path d="M40,210 Q180,120 320,210" fill="none" stroke="white" stroke-width="1.5" opacity="0.18"/>
+        <!-- Формулы -->
+        <g fill="white" opacity="0.35" font-size="10">
+          <text x="66" y="245">lim<tspan dy="-4" font-size="8">x→a</tspan> f(x) = L</text>
+          <text x="230" y="270">∑<tspan dy="3" font-size="7">k=1</tspan><tspan dy="-7" font-size="7">n</tspan> k = n(n+1)/2</text>
+          <text x="28" y="120">f'(x) = lim<tspan dy="-4" font-size="8">h→0</tspan> ( f(x+h) − f(x) ) / h</text>
+          <text x="250" y="110">∫<tspan dx="2">e</tspan><tspan dy="0">^{-x²}</tspan> dx</text>
+        </g>
+        <!-- Маленькие точки/марки -->
+        <g fill="white" opacity="0.25">
+          <circle cx="150" cy="350" r="2"/>
+          <circle cx="240" cy="350" r="2"/>
+          <circle cx="280" cy="210" r="2"/>
+        </g>
+      </svg>
 
       <!-- логотип + шапка -->
       <div class="absolute top-3 left-3 flex items-center gap-2">
@@ -91,23 +116,16 @@
         <div class="text-[10px] uppercase tracking-wider text-fuchsia-200/90">Учебный вечер</div>
       </div>
 
-      <!-- «прорезь под ленту» -->
-      <div class="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 rounded-b-xl bg-black/25 border border-white/15"></div>
-
-      <!-- контент: по центру -->
+      <!-- контент: по центру (как было) -->
       <div class="relative h-full w-full px-5 py-6 flex flex-col items-center justify-center gap-4">
-        <!-- белая карточка имени с лёгкой внутренней тенью -->
-        <div class="relative rounded-2xl bg-white px-5 py-4 border border-white/80 shadow w-[85%]">
-          <div class="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)]"></div>
+        <!-- белая карточка имени -->
+        <div class="relative rounded-2xl bg-white px-5 py-4 border border-white/70 shadow w-[85%]">
           <div class="name text-slate-900 font-bold leading-tight text-center text-2xl md:text-3xl break-words"></div>
         </div>
-
-        <!-- роль: градиентная рамка + светлая подложка -->
+        <!-- роль — простая пилла -->
         <div class="mt-1">
-          <span class="roleFrame inline-flex items-center rounded-full p-[2px] bg-gradient-to-r from-cyan-300 to-teal-400">
-            <span class="roleInner inline-flex items-center rounded-full px-4 py-1 bg-white/90 text-slate-900 font-semibold uppercase tracking-wide roleText">
-              РОЛЬ
-            </span>
+          <span class="inline-flex items-center gap-2 text-xs bg-white/10 rounded-full px-3 py-1 border border-white/20 text-teal-300 font-semibold uppercase tracking-wide role">
+            РОЛЬ
           </span>
         </div>
       </div>
@@ -124,14 +142,7 @@
       ["Латыров Михаил", "медиа"],
     ];
 
-    // Стиль ролей (градиенты без эмодзи)
-    const ROLE_STYLE = {
-      "главный организатор": { frame: "from-teal-300 to-emerald-400" },
-      "организатор":        { frame: "from-sky-300 to-cyan-400" },
-      "медиа":               { frame: "from-fuchsia-300 to-violet-400" },
-    };
-
-    // Автоподгон имени (уменьшаем кегль, если ФИО длинное)
+    // Небольшой автоподгон ФИО (как было)
     function fitName(el, maxChars = 26, minPx = 18) {
       const basePx = 32;
       el.style.fontSize = basePx + "px";
@@ -148,20 +159,9 @@
     for (const [name, role] of PEOPLE) {
       const node = tpl.content.cloneNode(true);
 
-      // Имя
-      const nameEl = node.querySelector(".name");
-      nameEl.textContent = name;
-      fitName(nameEl, 26, 18);
-
-      // Роль
-      const r = role.trim().toLowerCase();
-      const roleTextEl = node.querySelector(".roleText");
-      const frameEl    = node.querySelector(".roleFrame");
-
-      roleTextEl.textContent = role.toUpperCase();
-
-      const style = ROLE_STYLE[r] || { frame: "from-indigo-300 to-purple-400" };
-      frameEl.className = `roleFrame inline-flex items-center rounded-full p-[2px] bg-gradient-to-r ${style.frame}`;
+      node.querySelector(".name").textContent = name;
+      node.querySelector(".role").textContent = role.toUpperCase();
+      fitName(node.querySelector(".name"), 26, 18);
 
       grid.appendChild(node);
     }
