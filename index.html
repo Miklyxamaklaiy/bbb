@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark">
+  <title>Бейджи — Учебный вечер</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* === Шрифты ===
+       Положите файл ALS Selector сюда: /fonts/ALSSelector.woff2
+       и раскомментируйте @font-face ниже.
+    */
+    /* @font-face {
+      font-family: "ALS Selector";
+      src: url("./fonts/ALSSelector.woff2") format("woff2");
+      font-weight: 400 800;
+      font-display: swap;
+    } */
+
+    @font-face {
+      font-family: "ALS Sector";
+      src: url("./fonts/ALS_Sector-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "ALS Sector";
+      src: url("./fonts/ALS_Sector-Bold.otf") format("opentype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    html, body { height: 100%; }
+    :root {
+      font-family: "ALS Selector","ALS Sector", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    /* Печать: 2 колонки на A4, без переносов внутри карточек */
+    @media print {
+      @page { size: A4; margin: 8mm; }
+      .badges-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8mm !important; }
+      .badge { width: 90mm !important; height: 120mm !important; break-inside: avoid; }
+      .controls { display:none !important; }
+      body { background: transparent !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 min-h-screen">
+  <div class="controls sticky top-0 z-10 bg-slate-900/80 backdrop-blur border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 text-indigo-100/90">
+      <img src="./logo.svg" class="h-8 w-8" alt="логотип">
+      <div class="text-sm opacity-90">Бейджи «Учебный вечер» — печать: Ctrl/Cmd+P (поля: <b>минимальные</b>, масштаб: <b>100%</b>)</div>
+      <div class="ml-auto text-xs opacity-70">Шрифт: «ALS Selector» (если добавлен) или «ALS Sector»</div>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <!-- сетка бейджей -->
+    <div class="badges-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
+      <!-- Карточки генерятся скриптом -->
+    </div>
+  </main>
+
+  <template id="badge-tpl">
+    <div class="badge relative overflow-hidden rounded-3xl shadow-2xl w-[360px] h-[480px] print:w-[90mm] print:h-[120mm]">
+      <!-- фон-градиент -->
+      <div class="absolute inset-0 bg-gradient-to-br from-[#0b1020] via-[#1c1f45] to-[#3b0f4c]"></div>
+      <!-- световые пятна -->
+      <div class="absolute -top-16 -left-16 h-48 w-48 rounded-full blur-3xl opacity-30 bg-fuchsia-500"></div>
+      <div class="absolute -bottom-16 -right-16 h-56 w-56 rounded-full blur-3xl opacity-25 bg-indigo-500"></div>
+      <!-- сетка -->
+      <svg class="absolute inset-0 opacity-[0.08]" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <defs><pattern id="g" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M 24 0 L 0 0 0 24" fill="none" stroke="white" stroke-width="0.5" />
+        </pattern></defs>
+        <rect width="100%" height="100%" fill="url(#g)" />
+      </svg>
+      <!-- логотип и мини-заголовок -->
+      <div class="absolute top-3 left-3 flex items-center gap-2">
+        <div class="bg-white/10 backdrop-blur border border-white/20 rounded-xl p-1.5">
+          <img src="./logo.svg" alt="Лого" class="h-8 w-8 object-contain">
+        </div>
+        <div class="text-[10px] uppercase tracking-wider text-fuchsia-200/90">Учебный вечер</div>
+      </div>
+
+      <!-- контент -->
+      <div class="relative h-full w-full p-5 flex flex-col justify-end">
+        <!-- белая карточка имени -->
+        <div class="relative rounded-2xl bg-white px-4 py-4 border border-white/70 shadow">
+          <div class="name text-slate-900 font-bold leading-tight text-2xl"></div>
+        </div>
+
+        <!-- роль -->
+        <div class="mt-3 self-center">
+          <span class="inline-flex items-center gap-2 text-xs bg-white/10 rounded-full px-3 py-1 border border-white/20 text-teal-300 font-semibold uppercase tracking-wide role">
+            роль
+          </span>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    const PEOPLE = [('Дмитрий Ананьев', 'главный организатор'), ('Александр Корнеев', 'организатор'), ('Анель Карапетян', 'организатор'), ('Анастасия Черноусова', 'медиа'), ('Латыров Михаил', 'медиа')];
+
+    const grid = document.querySelector('.badges-grid');
+    const tpl = document.getElementById('badge-tpl');
+
+    for (const [name, role] of PEOPLE) {
+      const node = tpl.content.cloneNode(true);
+
+      // Имя: переносим на 1–2 строки, верхний регистр только для роли — имя оставим как есть (красивее)
+      const nameEl = node.querySelector('.name');
+      nameEl.textContent = name;
+      // Роль
+      const roleEl = node.querySelector('.role');
+      roleEl.textContent = role.toUpperCase();
+
+      grid.appendChild(node);
+    }
+  </script>
+</body>
+</html>
