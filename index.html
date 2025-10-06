@@ -20,6 +20,11 @@
     }
     html{font-family:"ALS Sector",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif!important;}
 
+    body{
+      background:#0b1020; /* однотонный ровный фон */
+      color:white;
+    }
+
     @media print{
       @page{size:A4;margin:8mm;}
       .badges-grid{grid-template-columns:repeat(2,1fr)!important;gap:8mm!important;}
@@ -29,7 +34,7 @@
     }
   </style>
 </head>
-<body class="bg-slate-950 min-h-screen text-white">
+<body class="min-h-screen text-white">
   <div class="controls sticky top-0 z-10 bg-slate-900/80 backdrop-blur border-b border-white/10">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 text-indigo-100/90">
       <img src="./лого свг белое.svg" class="h-8 w-8" alt="логотип">
@@ -46,8 +51,10 @@
 
   <template id="badge-tpl">
     <div class="badge relative overflow-hidden rounded-3xl shadow-2xl w-[360px] h-[480px] print:w-[90mm] print:h-[120mm]">
-      <!-- Градиентный фон -->
-      <div class="absolute inset-0 bg-gradient-to-br from-[#22113c] via-[#371c57] to-[#532972]"></div>
+      <!-- Однотонный фон без RGB-рамки -->
+      <div class="absolute inset-0 bg-gradient-to-br from-[#25133f] via-[#301a5b] to-[#3e2478]"></div>
+
+      <!-- Легкие световые пятна -->
       <div class="absolute -top-32 -left-32 h-80 w-80 rounded-full blur-3xl opacity-30 bg-fuchsia-500"></div>
       <div class="absolute -bottom-32 -right-32 h-[22rem] w-[22rem] rounded-full blur-3xl opacity-25 bg-indigo-500"></div>
 
