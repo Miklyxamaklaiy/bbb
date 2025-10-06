@@ -46,12 +46,30 @@
 
   <template id="badge-tpl">
     <div class="badge relative overflow-hidden rounded-3xl shadow-2xl w-[360px] h-[480px] print:w-[90mm] print:h-[120mm]">
-      <!-- фон -->
+      <!-- ФОН -->
       <div class="absolute inset-0 bg-gradient-to-br from-[#22113c] via-[#371c57] to-[#532972]"></div>
       <div class="absolute -top-32 -left-32 h-80 w-80 rounded-full blur-3xl opacity-30 bg-fuchsia-500"></div>
       <div class="absolute -bottom-32 -right-32 h-[22rem] w-[22rem] rounded-full blur-3xl opacity-25 bg-indigo-500"></div>
 
-      <!-- логотип + центр. надпись -->
+      <!-- SVG формулы -->
+      <svg class="absolute inset-0 opacity-[0.08]" viewBox="0 0 800 600">
+        <defs>
+          <pattern id="grid" width="80" height="60" patternUnits="userSpaceOnUse">
+            <path d="M 80 0 L 0 0 0 60" fill="none" stroke="white" stroke-width="0.4" opacity="0.3"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+        <path d="M0,400 Q100,200 200,400 T400,400 T600,300 T800,400"
+              stroke="white" stroke-width="1" fill="none" opacity="0.3"/>
+        <text x="60" y="130" font-size="26" fill="white" opacity="0.25">∫ f(x)dx</text>
+        <text x="300" y="110" font-size="26" fill="white" opacity="0.25">y = sin(x)</text>
+        <text x="550" y="130" font-size="26" fill="white" opacity="0.25">√(x² + y²)</text>
+        <text x="140" y="320" font-size="22" fill="white" opacity="0.25">lim x→a f(x)=L</text>
+        <text x="620" y="360" font-size="22" fill="white" opacity="0.25">y = ln(x)</text>
+        <circle cx="650" cy="250" r="40" stroke="white" stroke-width="1" fill="none" opacity="0.25"/>
+      </svg>
+
+      <!-- Верхняя часть -->
       <div class="absolute inset-x-0 top-10 flex flex-col items-center text-center">
         <img src="./лого свг белое.svg" alt="Логотип" class="h-16 w-16 mb-3 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]">
         <h1 class="text-[38px] leading-[1.1] font-bold uppercase">
@@ -59,7 +77,7 @@
         </h1>
       </div>
 
-      <!-- контент -->
+      <!-- Контент -->
       <div class="relative h-full w-full px-6 py-6 flex flex-col items-center justify-center gap-4 mt-20">
         <div class="relative rounded-2xl bg-white px-5 py-4 border border-white/70 shadow w-[85%]">
           <div class="name text-slate-900 font-bold leading-tight text-center text-2xl md:text-3xl break-words"></div>
