@@ -34,13 +34,15 @@
   <div class="controls sticky top-0 z-10 bg-slate-900/80 backdrop-blur border-b border-white/10">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 text-indigo-100/90">
       <img src="./лого свг белое.svg" class="h-8 w-8" alt="логотип">
-      <div class="text-sm opacity-90">Печать: Ctrl/Cmd+P (поля: <b>минимальные</b>, масштаб: <b>100%</b>)</div>
+      <div class="text-sm opacity-90">
+        Печать: Ctrl/Cmd+P (поля: <b>минимальные</b>, масштаб: <b>100%</b>)
+      </div>
       <div class="ml-auto text-xs opacity-70">Шрифт: «ALS Sector»</div>
     </div>
   </div>
 
   <main class="max-w-6xl mx-auto px-4 py-6">
-    <!-- одна колонка: сверху вниз -->
+    <!-- одна колонка: бейджи друг под другом -->
     <div class="badges-grid grid grid-cols-1 gap-8 place-items-center"></div>
   </main>
 
@@ -52,7 +54,7 @@
       <div class="absolute -top-32 -left-32 h-80 w-80 rounded-full blur-3xl opacity-30 bg-fuchsia-500"></div>
       <div class="absolute -bottom-32 -right-32 h-[22rem] w-[22rem] rounded-full blur-3xl opacity-25 bg-indigo-500"></div>
 
-      <!-- сетка/формулы -->
+      <!-- сетка и формулы -->
       <svg class="absolute inset-0 opacity-[0.22]" viewBox="0 0 800 600" aria-hidden="true">
         <defs>
           <pattern id="grid" width="60" height="40" patternUnits="userSpaceOnUse">
@@ -71,10 +73,11 @@
         <circle cx="640" cy="240" r="45" stroke="white" stroke-width="1" fill="none" opacity="0.25"/>
       </svg>
 
-      <!-- контент и выравнивания -->
-      <div class="relative h-full w-full px-6 py-8 grid grid-rows-[auto_auto_1fr_auto] justify-items-center text-center">
+      <!-- контент: равные отступы -->
+      <div class="relative h-full w-full px-6 pb-8 pt-8 grid grid-rows-[auto_auto_1fr_auto] justify-items-center text-center">
         <img src="./лого свг белое.svg" alt="Логотип" class="h-16 w-16 mb-6 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]">
-        <h1 class="text-[38px] leading-[1.1] font-bold uppercase mb-6">
+        <!-- отступ под заголовком = отступ сверху над лого (32px) -->
+        <h1 class="text-[38px] leading-[1.1] font-bold uppercase mb-8">
           УЧЕБНЫЙ <span class="text-fuchsia-400">ВЕЧЕР</span>
         </h1>
 
@@ -85,8 +88,8 @@
           </div>
         </div>
 
-        <!-- РОЛЬ и ДАТА — ближе друг к другу -->
-        <div class="mt-2 flex flex-col items-center gap-1">
+        <!-- РОЛЬ и ДАТА: одинаковые промежутки -->
+        <div class="mt-2 flex flex-col items-center gap-2">
           <span class="inline-flex items-center gap-2 text-lg md:text-xl bg-white/10 rounded-full px-5 py-2 border border-white/20 text-teal-300 font-semibold uppercase tracking-wide role">
             РОЛЬ
           </span>
