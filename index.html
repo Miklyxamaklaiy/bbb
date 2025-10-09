@@ -21,82 +21,131 @@
     html{font-family:"ALS Sector",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif!important;}
 
     body{
-      background:#0b1020; /* однотонный ровный фон */
+      background:#0b1020;
       color:white;
     }
 
     @media print{
       @page{size:A4;margin:8mm;}
-      .badges-grid{grid-template-columns:repeat(2,1fr)!important;gap:8mm!important;}
+      .badges-grid{grid-template-columns:1fr!important;gap:8mm!important;}
       .badge{width:90mm!important;height:120mm!important;break-inside:avoid;}
       .controls{display:none!important;}
       body{background:transparent!important;}
     }
+
+    /* ✅ вертикальное расположение, равные промежутки */
+    .badges-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 60px; /* расстояние между бейджами — зелёные стрелки */
+      padding: 60px 0;
+    }
+
+    /* ✅ карточка — угловатая, без скруглений */
+    .badge {
+      position: relative;
+      overflow: hidden;
+      width: 360px;
+      height: 480px;
+      border-radius: 0; /* без скруглений */
+      box-shadow: none;
+      border: 2px solid rgba(200,130,255,0.5);
+      background: linear-gradient(180deg, #241341, #190e2f);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    /* фон и формулы внутри */
+    .badge::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08), transparent 60%);
+      z-index: 0;
+    }
+
+    .badge img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 20px; /* красная стрелка — верхний отступ */
+    }
+
+    .badge h1 {
+      font-size: 34px;
+      line-height: 1.1;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: white;
+      z-index: 1;
+    }
+
+    .badge h1 span {
+      color: #ea7cff;
+    }
+
+    .name-block {
+      margin: 40px 0; /* 🔸 красные стрелки: равные отступы сверху и снизу */
+      background: white;
+      color: #0b0e1a;
+      font-weight: 700;
+      font-size: 22px;
+      text-align: center;
+      width: 80%;
+      padding: 16px;
+      border: none;
+      border-radius: 0; /* квадрат */
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      z-index: 1;
+    }
+
+    .footer .role {
+      font-size: 16px;
+      font-weight: 600;
+      color: #00e5ff;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .footer .date {
+      font-size: 14px;
+      color: #d9ccff;
+      opacity: 0.9;
+    }
+
   </style>
 </head>
 <body class="min-h-screen text-white">
-  <div class="controls sticky top-0 z-10 bg-slate-900/80 backdrop-blur border-b border-white/10">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 text-indigo-100/90">
-      <img src="./лого свг белое.svg" class="h-8 w-8" alt="логотип">
-      <div class="text-sm opacity-90">
-        Печать: Ctrl/Cmd+P (поля: <b>минимальные</b>, масштаб: <b>100%</b>)
-      </div>
-      <div class="ml-auto text-xs opacity-70">Шрифт: «ALS Sector»</div>
-    </div>
-  </div>
 
   <main class="max-w-6xl mx-auto px-4 py-6">
-    <div class="badges-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center"></div>
+    <div class="badges-grid"></div>
   </main>
 
   <template id="badge-tpl">
-    <div class="badge relative overflow-hidden rounded-3xl shadow-2xl w-[360px] h-[480px] print:w-[90mm] print:h-[120mm]">
-      <!-- Однотонный фон без RGB-рамки -->
-      <div class="absolute inset-0 bg-gradient-to-br from-[#25133f] via-[#301a5b] to-[#3e2478]"></div>
-
-      <!-- Легкие световые пятна -->
-      <div class="absolute -top-32 -left-32 h-80 w-80 rounded-full blur-3xl opacity-30 bg-fuchsia-500"></div>
-      <div class="absolute -bottom-32 -right-32 h-[22rem] w-[22rem] rounded-full blur-3xl opacity-25 bg-indigo-500"></div>
-
-      <!-- SVG сетка и формулы -->
-      <svg class="absolute inset-0 opacity-[0.22]" viewBox="0 0 800 600">
-        <defs>
-          <pattern id="grid" width="60" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 60 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.4" opacity="0.25"/>
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
-        <path d="M0,420 Q100,200 200,420 T400,420 T600,300 T800,420"
-              stroke="white" stroke-width="1.2" fill="none" opacity="0.3"/>
-        <path d="M80,500 Q150,350 240,500 T400,500" stroke="white" stroke-width="0.9" fill="none" opacity="0.25"/>
-        <text x="60" y="120" font-size="26" fill="white" opacity="0.25">∫ f(x)dx</text>
-        <text x="280" y="110" font-size="26" fill="white" opacity="0.3">y = sin(x)</text>
-        <text x="540" y="130" font-size="26" fill="white" opacity="0.28">√(x² + y²)</text>
-        <text x="140" y="320" font-size="22" fill="white" opacity="0.3">lim x→a f(x)=L</text>
-        <text x="600" y="360" font-size="22" fill="white" opacity="0.3">y = ln(x)</text>
-        <text x="400" y="250" font-size="26" fill="white" opacity="0.28">e^{iπ}+1=0</text>
-        <circle cx="640" cy="240" r="45" stroke="white" stroke-width="1" fill="none" opacity="0.25"/>
-      </svg>
-
+    <div class="badge">
       <!-- Верхняя часть -->
-      <div class="absolute inset-x-0 top-10 flex flex-col items-center text-center">
-        <img src="./лого свг белое.svg" alt="Логотип" class="h-16 w-16 mb-3 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]">
-        <h1 class="text-[38px] leading-[1.1] font-bold uppercase">
-          УЧЕБНЫЙ <span class="text-fuchsia-400">ВЕЧЕР</span>
-        </h1>
+      <div class="flex flex-col items-center text-center">
+        <img src="./лого свг белое.svg" alt="Логотип">
+        <h1>УЧЕБНЫЙ <span>ВЕЧЕР</span></h1>
       </div>
 
-      <!-- Контент -->
-      <div class="relative h-full w-full px-6 py-6 flex flex-col items-center justify-center gap-4 mt-20">
-        <div class="relative rounded-2xl bg-white px-5 py-4 border border-white/70 shadow w-[85%]">
-          <div class="name text-slate-900 font-bold leading-tight text-center text-2xl md:text-3xl break-words"></div>
-        </div>
-        <div class="mt-1 flex flex-col items-center gap-1">
-          <span class="inline-flex items-center gap-2 text-lg md:text-xl bg-white/10 rounded-full px-5 py-2 border border-white/20 text-teal-300 font-semibold uppercase tracking-wide role">
-            РОЛЬ
-          </span>
-          <div class="text-sm text-white/70 font-medium mt-1">Октябрь 2025</div>
-        </div>
+      <!-- Имя -->
+      <div class="name-block name">Имя Фамилия</div>
+
+      <!-- Нижняя часть -->
+      <div class="footer">
+        <div class="role">МЕДИА</div>
+        <div class="date">Октябрь 2025</div>
       </div>
     </div>
   </template>
@@ -111,12 +160,11 @@
     ];
 
     function fitName(el, maxChars = 26, minPx = 18) {
-      const basePx = 32;
+      const basePx = 28;
       el.style.fontSize = basePx + "px";
       if (el.textContent.length > maxChars) {
         const k = Math.min(basePx, Math.max(minPx, basePx - Math.ceil((el.textContent.length - maxChars) * 0.7)));
         el.style.fontSize = k + "px";
-        el.style.lineHeight = "1.1";
       }
     }
 
@@ -127,7 +175,7 @@
       const node = tpl.content.cloneNode(true);
       node.querySelector(".name").textContent = name;
       node.querySelector(".role").textContent = role.toUpperCase();
-      fitName(node.querySelector(".name"), 26, 18);
+      fitName(node.querySelector(".name"));
       grid.appendChild(node);
     }
   </script>
