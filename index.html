@@ -19,11 +19,7 @@
       font-weight:700;font-style:normal;font-display:swap;
     }
     html{font-family:"ALS Sector",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif!important;}
-
-    body{
-      background:#0b1020;
-      color:white;
-    }
+    body{background:#0b1020;color:white;}
 
     @media print{
       @page{size:A4;margin:8mm;}
@@ -33,72 +29,84 @@
       body{background:transparent!important;}
     }
 
-    /* ✅ вертикальное расположение, равные промежутки */
+    /* === Расположение: вертикальная колонка === */
     .badges-grid {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 60px; /* расстояние между бейджами — зелёные стрелки */
+      gap: 60px; /* расстояние между бейджами */
       padding: 60px 0;
     }
 
-    /* ✅ карточка — угловатая, без скруглений */
+    /* === Карточка (рамка) === */
     .badge {
       position: relative;
-      overflow: hidden;
       width: 360px;
       height: 480px;
-      border-radius: 0; /* без скруглений */
-      box-shadow: none;
-      border: 2px solid rgba(200,130,255,0.5);
-      background: linear-gradient(180deg, #241341, #190e2f);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      padding: 40px 20px;
+      border-radius: 28px; /* только рамка скруглена */
+      overflow: hidden;
+      border: 2px solid rgba(200,130,255,0.6);
+      box-shadow: 0 0 40px rgba(180,90,255,0.25);
     }
 
-    /* фон и формулы внутри */
+    /* === Градиентный фон и подсветка === */
     .badge::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08), transparent 60%);
+      background: linear-gradient(145deg,#25133f,#3a1d66,#532972);
       z-index: 0;
     }
 
-    .badge img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      margin-bottom: 20px; /* красная стрелка — верхний отступ */
-    }
-
-    .badge h1 {
-      font-size: 34px;
-      line-height: 1.1;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: white;
+    .badge::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(234,124,255,0.18), transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(124,58,237,0.25), transparent 60%);
       z-index: 1;
     }
 
-    .badge h1 span {
-      color: #ea7cff;
+    /* === Контент внутри === */
+    .content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      padding: 40px 20px;
+      text-align: center;
     }
 
+    .logo {
+      width: 84px;
+      height: 84px;
+      margin-bottom: 16px; /* верхняя (зелёная) дистанция */
+      filter: drop-shadow(0 0 12px rgba(255,255,255,0.5));
+    }
+
+    h1 {
+      font-size: 38px;
+      line-height: 1.1;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    h1 span { color: #ea7cff; }
+
     .name-block {
-      margin: 40px 0; /* 🔸 красные стрелки: равные отступы сверху и снизу */
+      margin: 40px 0; /* одинаковый верх-низ (красные стрелки) */
       background: white;
       color: #0b0e1a;
       font-weight: 700;
       font-size: 22px;
-      text-align: center;
       width: 80%;
       padding: 16px;
       border: none;
-      border-radius: 0; /* квадрат */
+      border-radius: 0; /* угловатый блок */
     }
 
     .footer {
@@ -106,46 +114,45 @@
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      z-index: 1;
+      color: #d9ccff;
+      font-size: 16px;
     }
 
     .footer .role {
-      font-size: 16px;
-      font-weight: 600;
       color: #00e5ff;
+      font-weight: 600;
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     .footer .date {
       font-size: 14px;
-      color: #d9ccff;
       opacity: 0.9;
     }
-
   </style>
 </head>
 <body class="min-h-screen text-white">
-
   <main class="max-w-6xl mx-auto px-4 py-6">
     <div class="badges-grid"></div>
   </main>
 
   <template id="badge-tpl">
     <div class="badge">
-      <!-- Верхняя часть -->
-      <div class="flex flex-col items-center text-center">
-        <img src="./лого свг белое.svg" alt="Логотип">
-        <h1>УЧЕБНЫЙ <span>ВЕЧЕР</span></h1>
-      </div>
+      <div class="content">
+        <!-- Верх -->
+        <div>
+          <img src="./лого свг белое.svg" alt="Логотип" class="logo">
+          <h1>УЧЕБНЫЙ <span>ВЕЧЕР</span></h1>
+        </div>
 
-      <!-- Имя -->
-      <div class="name-block name">Имя Фамилия</div>
+        <!-- Имя -->
+        <div class="name-block name">Имя Фамилия</div>
 
-      <!-- Нижняя часть -->
-      <div class="footer">
-        <div class="role">МЕДИА</div>
-        <div class="date">Октябрь 2025</div>
+        <!-- Низ -->
+        <div class="footer">
+          <div class="role">МЕДИА</div>
+          <div class="date">Октябрь 2025</div>
+        </div>
       </div>
     </div>
   </template>
