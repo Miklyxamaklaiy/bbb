@@ -21,6 +21,7 @@
     html{font-family:"ALS Sector",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif!important;}
     body{ background:#0b1020; color:white; }
 
+    /* Печать оставил как было: 2 колонки на листе */
     @media print{
       @page{size:A4;margin:8mm;}
       .badges-grid{grid-template-columns:repeat(2,1fr)!important;gap:8mm!important;}
@@ -40,20 +41,18 @@
   </div>
 
   <main class="max-w-6xl mx-auto px-4 py-6">
-    <div class="badges-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center"></div>
+    <!-- ВАЖНОЕ ИЗМЕНЕНИЕ: одна колонка сверху вниз -->
+    <div class="badges-grid grid grid-cols-1 gap-8 place-items-center"></div>
   </main>
 
   <template id="badge-tpl">
-    <!-- ВНЕШНЯЯ РАМКА КВАДРАТНАЯ -->
+    <!-- Внешняя рамка квадратная (без скругления), остальное как было -->
     <div class="badge relative overflow-hidden rounded-none shadow-2xl w-[360px] h-[480px] print:w-[90mm] print:h-[120mm]">
-      <!-- Градиентный фон -->
       <div class="absolute inset-0 bg-gradient-to-br from-[#25133f] via-[#301a5b] to-[#3e2478]"></div>
 
-      <!-- Световые пятна -->
       <div class="absolute -top-32 -left-32 h-80 w-80 rounded-full blur-3xl opacity-30 bg-fuchsia-500"></div>
       <div class="absolute -bottom-32 -right-32 h-[22rem] w-[22rem] rounded-full blur-3xl opacity-25 bg-indigo-500"></div>
 
-      <!-- Формулы -->
       <svg class="absolute inset-0 opacity-[0.22]" viewBox="0 0 800 600" aria-hidden="true">
         <defs>
           <pattern id="grid" width="60" height="40" patternUnits="userSpaceOnUse">
@@ -72,22 +71,23 @@
         <circle cx="640" cy="240" r="45" stroke="white" stroke-width="1" fill="none" opacity="0.25"/>
       </svg>
 
-      <!-- ВНУТРЕННЯЯ ВЕРТИКАЛЬНАЯ СЕТКА: фиксируем отступы -->
+      <!-- Внутренняя вертикальная сетка фиксирует одинаковые отступы -->
       <div class="relative h-full w-full px-6 py-8 grid grid-rows-[auto_auto_1fr_auto_auto] justify-items-center text-center">
-        <!-- HEADER -->
+        <!-- Лого -->
         <img src="./лого свг белое.svg" alt="Логотип" class="h-16 w-16 mb-6 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]">
+        <!-- Заголовок (оставил как было) -->
         <h1 class="text-[38px] leading-[1.1] font-bold uppercase mb-6">
           УЧЕБНЫЙ <span class="text-fuchsia-400">ВЕЧЕР</span>
         </h1>
 
-        <!-- NAME -->
+        <!-- Имя (композиция как на скрине) -->
         <div class="self-center w-full flex items-center justify-center">
           <div class="relative rounded-2xl bg-white px-5 py-4 border border-white/70 shadow w-[85%]">
             <div class="name text-slate-900 font-bold leading-tight text-center text-2xl md:text-3xl break-words"></div>
           </div>
         </div>
 
-        <!-- FOOTER -->
+        <!-- Роль + Дата (как было) -->
         <div class="mt-6">
           <span class="inline-flex items-center gap-2 text-lg md:text-xl bg-white/10 rounded-full px-5 py-2 border border-white/20 text-teal-300 font-semibold uppercase tracking-wide role">
             РОЛЬ
@@ -103,7 +103,7 @@
       ["Дмитрий Ананьев", "главный организатор"],
       ["Александр Корнеев", "организатор"],
       ["Анель Карапетян", "организатор"],
-      ["Анастасия Черноусова", "медия"],
+      ["Анастасия Черноусова", "медиа"],
       ["Латыров Михаил", "медиа"],
     ];
 
